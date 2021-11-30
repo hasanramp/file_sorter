@@ -65,7 +65,7 @@ class SortFiles:
 
 start_time = time.time()
 parent_dir = os.path.dirname(os.getcwd())
-base_dir = parent_dir + '/Downloads'
+base_dir = os.path.join(parent_dir, 'Downloads')
 files_sorter = SortFiles(base_dir)
 directories = os.listdir(base_dir)
 files_sorter.get_pattern_matches(directories=directories)
