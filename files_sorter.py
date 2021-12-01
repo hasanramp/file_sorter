@@ -16,24 +16,19 @@ class SortFiles:
         print(f'file for {end_dir} detected....')
         print(f'moving file to {end_dir}...')
         final_destination = ''
-
+        original_dest = os.path.join(base_dir, filename)
         if pattern == 'tt.pdf':
             final_destination = os.path.join(base_dir, end_dir, date.today().strftime('%d-%m-%Y') + f'_{filename}')
-            print(final_destination)
-            shutil.move(base_dir + f'/{filename}',
+            shutil.move(original_dest,
                         final_destination)
 
         elif pattern == '2021-23.pdf':
             final_destination = os.path.join(base_dir, end_dir, date.today().strftime('%d-%m-%Y') + f'_{filename}')
-            shutil.move(base_dir + f'/{filename}', final_destination)
+            shutil.move(original_dest, final_destination)
 
-        elif pattern == '.deb':
+        elif pattern == '.exe':
             final_destination = os.path.join(base_dir, end_dir, f'_{filename}')
-            shutil.move(base_dir + f'/{filename}', final_destination)
-
-        elif pattern == '.AppImage':
-            final_destination = os.path.join(base_dir, end_dir, f'_{filename}')
-            shutil.move(base_dir + f'/{filename}', final_destination)
+            shutil.move(original_dest, final_destination)
         print(final_destination)
         print(f'file moved to {end_dir} !')
 

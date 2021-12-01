@@ -1,5 +1,5 @@
 {
-  "patterns": [[null, "2021-23.pdf"], ["11th", "tt.pdf"]],
+  "patterns": [[null, "2021-23.pdf"], ["11th", "tt.pdf"], [null, ".exe"]],
   "default_dir" : "Downloads",
-  "end_dirs": ["pace_timetables", "college_timetables",]
+  "end_dirs": ["pace_timetables", "college_timetables", "setups"]
 }
