@@ -4,6 +4,7 @@ import shutil
 from datetime import date
 import time
 import json
+from termcolor import colored
 
 
 class SortFiles:
@@ -74,13 +75,19 @@ base_dir = os.path.join(parent_dir, 'Downloads')
 files_sorter = SortFiles(base_dir)
 directories = os.listdir(base_dir)
 files_sorter.get_pattern_matches(directories=directories)
-print(f'\n\nnumber of files moved: {files_sorter.number_of_files_moved}')
+colored_number_of_files = colored(str(files_sorter.number_of_files_moved), 'cyan')
+print(f'\n\nnumber of files moved: {colored_number_of_files}')
 time_taken = time.time() - start_time
 
 added_folders_dict = files_sorter.to_move_dirs_dict
+text_colors = ['grey', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white']
+index = 0
 for key in added_folders_dict.keys():
     n_of_files = added_folders_dict[key]
     if n_of_files != 0:
-        print(f'files added in {key}: {n_of_files}')
+        text = colored(f'files added in {key}: {n_of_files}', text_colors[index])
+        print(text)
+    index += 1
 
+time_taken = colored(str(time_taken), 'magenta')
 print(f'finished in {time_taken} seconds')
