@@ -28,13 +28,17 @@ class SortFiles:
         print(f'moving file to {end_dir}...')
         final_destination = ''
         original_dest = os.path.join(base_dir, filename)
+        final_dir = os.path.join(base_dir, end_dir)
+        final_dir_exists = os.path.isdir(final_dir)
+        if final_dir_exists is False:
+            os.mkdir(final_dir)
         if pattern == 'tt.pdf':
             final_destination = os.path.join(base_dir, end_dir, date.today().strftime('%d-%m-%Y') + f'_{filename}')
             shutil.move(original_dest,
                         final_destination)
 
         elif pattern == '2021-23.pdf':
-            final_destination = os.path.join(base_dir, end_dir, date.today().strftime('%d-%m-%Y'), f'_{filename}')
+            final_destination = os.path.join(base_dir, end_dir, date.today().strftime('%d-%m-%Y') + f'_{filename}')
             shutil.move(original_dest, final_destination)
 
         elif pattern == '.appimage' or '.AppImage' or '.deb':
