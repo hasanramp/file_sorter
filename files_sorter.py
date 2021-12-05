@@ -2,18 +2,19 @@ import os
 import re
 import shutil
 from datetime import date
-import time
 import json
-from termcolor import colored
 
 
 class SortFiles:
-    def __init__(self, base_dir):
+    def __init__(self, base_dir=None):
         self.number_of_files_moved = 0
-        self.base_dir = base_dir
         patterns, default_dir, end_dirs = self.get_config()
         self. patterns = patterns
-        self.default_dir = default_dir
+        if base_dir != None:
+            self.base_dir = base_dir
+        else:
+            parent_dir = os.path.dirname(os.getcwd())
+            self.base_dir = os.path.join(parent_dir, default_dir)
         self.end_dirs = end_dirs
         arr = []
         for x in self.end_dirs:
@@ -33,18 +34,20 @@ class SortFiles:
                         final_destination)
 
         elif pattern == '2021-23.pdf':
-            final_destination = os.path.join(base_dir, end_dir, date.today().strftime('%d-%m-%Y') + f'_{filename}')
+            final_destination = os.path.join(base_dir, end_dir, date.today().strftime('%d-%m-%Y'), f'_{filename}')
             shutil.move(original_dest, final_destination)
 
         elif pattern == '.appimage' or '.AppImage' or '.deb':
             final_destination = os.path.join(base_dir, end_dir, f'{filename}')
             shutil.move(original_dest, final_destination)
-        print(final_destination)
         print(f'file moved to {end_dir} !')
         end_dir = end_dir.replace('/', '')
         self.to_move_dirs_dict[end_dir] += 1
 
-    def get_pattern_matches(self, directories):
+    def get_pattern_matches(self):
+        parent_dir = os.path.dirname(os.getcwd())
+        base_dir = os.path.join(parent_dir, self.base_dir)
+        directories = os.listdir(base_dir)
         for src_path in directories:
             index = 0
             for pattern in self.patterns:
@@ -52,6 +55,7 @@ class SortFiles:
                 if start_str is not None:
                     matches = re.search(f'^{start_str}.*{end_str}$', src_path)
                     if matches:
+
                         end_dir = self.end_dirs[index] + '/'
                         self.move_file(end_str, src_path, end_dir)
                         self.number_of_files_moved += 1
@@ -63,31 +67,33 @@ class SortFiles:
                         self.number_of_files_moved += 1
                 index += 1
 
+    def detect_to_move_files(self):
+        directories = os.listdir(self.base_dir)
+        file_matches = []
+        for src_path in directories:
+            index = 0
+            for pattern in self.patterns:
+                start_str, end_str = pattern
+                if start_str is not None:
+                    matches = re.search(f'^{start_str}.*{end_str}$', src_path)
+                    if matches:
+                        file_matches.append(src_path)
+                else:
+                    matches = re.search(f' *{end_str}$', src_path)
+                    if matches:
+                        file_matches.append(src_path)
+                index += 1
+        return file_matches
+
     def get_config(self):
         config_file = open('config.json', 'r')
         config_json = json.load(config_file)
         return config_json['patterns'], config_json['default_dir'], config_json['end_dirs']
 
-
-start_time = time.time()
-parent_dir = os.path.dirname(os.getcwd())
-base_dir = os.path.join(parent_dir, 'Downloads')
-files_sorter = SortFiles(base_dir)
-directories = os.listdir(base_dir)
-files_sorter.get_pattern_matches(directories=directories)
-colored_number_of_files = colored(str(files_sorter.number_of_files_moved), 'cyan')
-print(f'\n\nnumber of files moved: {colored_number_of_files}')
-time_taken = time.time() - start_time
-
-added_folders_dict = files_sorter.to_move_dirs_dict
-text_colors = ['grey', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white']
-index = 0
-for key in added_folders_dict.keys():
-    n_of_files = added_folders_dict[key]
-    if n_of_files != 0:
-        text = colored(f'files added in {key}: {n_of_files}', text_colors[index])
-        print(text)
-    index += 1
-
-time_taken = colored(str(time_taken), 'magenta')
-print(f'finished in {time_taken} seconds')
+if __name__ == '__main__':
+    parent_dir = os.path.dirname(os.getcwd())
+    base_dir = os.path.join(parent_dir, 'Downloads')
+    files_sorter = SortFiles(base_dir)
+    directories = os.listdir(base_dir)
+    matches = files_sorter.detect_to_move_files(directories)
+    print(matches)
