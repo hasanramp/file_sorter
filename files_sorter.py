@@ -10,7 +10,7 @@ class SortFiles:
         self.number_of_files_moved = 0
         patterns, default_dir, end_dirs = self.get_config()
         self. patterns = patterns
-        if base_dir != None:
+        if base_dir is not None:
             self.base_dir = base_dir
         else:
             parent_dir = os.path.dirname(os.getcwd())
@@ -94,10 +94,3 @@ class SortFiles:
         config_json = json.load(config_file)
         return config_json['patterns'], config_json['default_dir'], config_json['end_dirs']
 
-if __name__ == '__main__':
-    parent_dir = os.path.dirname(os.getcwd())
-    base_dir = os.path.join(parent_dir, 'Downloads')
-    files_sorter = SortFiles(base_dir)
-    directories = os.listdir(base_dir)
-    matches = files_sorter.detect_to_move_files(directories)
-    print(matches)

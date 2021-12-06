@@ -53,6 +53,6 @@ elif sort_args.sort == 'detect':
             print(file)
         print('\n')
 
-time_taken = time.time() - start_time
-time_taken = colored(str(time_taken), 'magenta')
+time_taken = str(time.time() - start_time)
+time_taken = colored(time_taken, 'magenta')
 print(f'finished in {time_taken} seconds')
