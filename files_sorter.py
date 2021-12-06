@@ -47,7 +47,7 @@ class SortFiles:
         else:
             final_destination = os.path.join(base_dir, end_dir, f'{filename}')
             shutil.move(original_dest, final_destination)
-            
+
         print(f'file moved to {end_dir} !')
         end_dir = end_dir.replace('/', '')
         self.to_move_dirs_dict[end_dir] += 1
