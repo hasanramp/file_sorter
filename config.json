@@ -1,5 +1,5 @@
 {
-  "patterns": [[null, ".deb"], [null, ".AppImage"], [null, ".appimage"]],
+  "patterns": [["11th", "tt.pdf"], [null, "2021-23.pdf"], [null, ".pacman"], [null, ".AppImage"], [null, ".appimage"], [null, ".tar.gz"], [null, ".gz"], [null, ".tar"], [null, ".zip"]],
   "default_dir" : "Downloads",
-  "end_dirs": ["deb_files", "AppImages", "AppImages"]
+  "end_dirs": ["college_timetables", "pace_timetables", "pacmans", "AppImages", "AppImages", "archives", "archives", "tarballs", "zips"]
 }

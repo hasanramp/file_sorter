@@ -1,0 +1,9 @@
+README.md
+files_sorter.py
+setup.py
+files_sorter.egg-info/PKG-INFO
+files_sorter.egg-info/SOURCES.txt
+files_sorter.egg-info/dependency_links.txt
+files_sorter.egg-info/entry_points.txt
+files_sorter.egg-info/requires.txt
+files_sorter.egg-info/top_level.txt

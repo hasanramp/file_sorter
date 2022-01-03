@@ -1,12 +1,25 @@
-import time
-from files_sorter import SortFiles
-import os
+import click
 from termcolor import colored
-import argparse
+from files_sorter import SortFiles
+import time
+import os
+import platform
 
 start_time = time.time()
 
+file_dir = os.path.abspath(__file__)
+if platform.system() == 'Linux':
+	parent_dir_list = file_dir.split('/')
+else:
+	parent_dir_list = file_dir.split('\\')
+parent_dir_list.remove('')
+parent_dir_list.remove(parent_dir_list[-1])
 
+if platform.system() == 'Linux':
+	parent_dir = '/'.join(parent_dir_list)
+	parent_dir = '/' + parent_dir
+
+os.chdir(parent_dir)
 
 def sort_files(files_sorter):
     files_sorter.get_pattern_matches()
@@ -22,36 +35,42 @@ def sort_files(files_sorter):
             print(text)
         index += 1
 
+@click.group()
+def file_sorter():
+    pass
 
-sort_parser = argparse.ArgumentParser()
-sort_parser.add_argument("sort", help="sorts the files of the default directory")
-sort_parser.add_argument("--def_dir")
-
-sort_args = sort_parser.parse_args()
-if sort_args.sort == 'sort':
-    if sort_args.def_dir != None:
+@file_sorter.command()
+@click.option('--def_dir', '--default_dir', '--d', type=str, default=None)
+def sort(def_dir):
+    if def_dir != None:
         parent_dir = os.path.dirname(os.getcwd())
-        base_dir = os.path.join(parent_dir, sort_args.def_dir)
+        base_dir = os.path.join(parent_dir, def_dir)
         files_sorter = SortFiles(base_dir=base_dir)
     else:
         files_sorter = SortFiles()
+    
     sort_files(files_sorter)
 
-elif sort_args.sort == 'detect':
-    if sort_args.def_dir != None:
+@file_sorter.command()
+@click.option('--def_dir', '--default_dir', '--d', type=str, default=None)
+def detect(def_dir):
+    if def_dir != None:
         parent_dir = os.path.dirname(os.getcwd())
-        base_dir = os.path.join(parent_dir, sort_args.def_dir)
+        base_dir = os.path.join(parent_dir, def_dir)
         files_sorter = SortFiles(base_dir=base_dir)
     else:
         files_sorter = SortFiles()
     matched_files = files_sorter.detect_to_move_files()
     if matched_files == []:
-        print('no files to sort')
+        print(colored('no files to sort', 'cyan'))
     else:
         print('\n')
         for file in matched_files:
             print(file)
         print('\n')
+
+if __name__ == '__main__':
+    file_sorter()
 
 time_taken = str(time.time() - start_time)
 time_taken = colored(time_taken, 'magenta')
