@@ -41,25 +41,44 @@ def file_sorter():
 
 @file_sorter.command()
 @click.option('--def_dir', '--default_dir', '--d', type=str, default=None)
-def sort(def_dir):
+@click.option('--sort_in_def_dir', '--dsr', type=bool, default=True)
+@click.option('--to_sort_dir', '--tsd', type=str, default=None)
+def sort(def_dir, sort_in_def_dir, to_sort_dir):
+    base_dir = ''
     if def_dir != None:
         parent_dir = os.path.dirname(os.getcwd())
         base_dir = os.path.join(parent_dir, def_dir)
-        files_sorter = SortFiles(base_dir=base_dir)
+        if to_sort_dir:
+            files_sorter = SortFiles(to_track_dir=base_dir, sort_in_default_dir=to_sort_dir)
+        else:
+            files_sorter = SortFiles(to_track_dir=base_dir, sort_in_default_dir=sort_in_def_dir)
     else:
-        files_sorter = SortFiles()
+        if to_sort_dir:
+            files_sorter = SortFiles(sort_in_default_dir=to_sort_dir)
+        else:
+            files_sorter = SortFiles(sort_in_default_dir=sort_in_def_dir)
+
+
     
     sort_files(files_sorter)
 
 @file_sorter.command()
 @click.option('--def_dir', '--default_dir', '--d', type=str, default=None)
+# @click.option('--sort_in_def_dir', '--dsr', type=bool, default=True)
+# @click.option('--to_sort_dir', '--tsd', type=str, default=None)
 def detect(def_dir):
+    
     if def_dir != None:
         parent_dir = os.path.dirname(os.getcwd())
         base_dir = os.path.join(parent_dir, def_dir)
-        files_sorter = SortFiles(base_dir=base_dir)
+        files_sorter = SortFiles(to_track_dir=base_dir)
     else:
         files_sorter = SortFiles()
+    
+    # if to_sort_dir:
+    #     files_sorter = SortFiles(to_track_dir=base_dir, sort_in_default_dir=to_sort_dir)
+    # else:
+    #     files_sorter = SortFiles(to_track_dir=base_dir, sort_in_default_dir=sort_in_def_dir)
     matched_files = files_sorter.detect_to_move_files()
     if matched_files == []:
         print(colored('no files to sort', 'cyan'))
