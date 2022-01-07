@@ -24,12 +24,13 @@ class SortFiles:
             to_sort_dir = sort_in_default_dir
             self.to_sort_dir = os.path.join(os.path.dirname(os.getcwd()), to_sort_dir)
         elif sort_in_default_dir is False:
-            to_sort_dir = to_track_dir
+            to_sort_dir = self.to_track_dir
+            self.to_sort_dir = os.path.join(os.path.dirname(os.getcwd()), to_sort_dir)
         else:
             print('Invalid type for to_sort_dir')
             exit()
         # self.to_sort_dir = to_sort_dir
-        self.to_sort_dir = os.path.join(os.path.dirname(os.getcwd()), to_sort_dir)
+        
         self.end_dirs = end_dirs
         arr = []
         for x in self.end_dirs:
@@ -98,7 +99,12 @@ class SortFiles:
                     matches = re.search(f' *{end_str}$', src_path)
                     if matches:
                         print('reached here')
-                        end_dir = self.end_dirs[index] + '/'
+                        try:
+                            end_dir = self.end_dirs[index] + '/'
+                        except IndexError:
+                            from termcolor import colored
+                            print(colored(f'folder name was not specified for pattern {end_str}', 'red'))
+                            exit()
                         self.move_file(end_str, src_path, end_dir)
                         self.number_of_files_moved += 1
                 index += 1
@@ -126,3 +132,4 @@ class SortFiles:
         config_json = json.load(config_file)
         return config_json['patterns'], config_json['default_dir'], config_json['end_dirs']
 
+#, "setups"

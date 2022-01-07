@@ -1,5 +1,5 @@
 {
-  "patterns": [["11th", "tt.pdf"], [null, "2021-23.pdf"], [null, ".pacman"], [null, ".AppImage"], [null, ".appimage"], [null, ".tar.gz"], [null, ".gz"], [null, ".tar"], [null, ".zip"]],
+  "patterns": [["11th", "tt.pdf"], [null, "2021-23.pdf"], [null, ".pacman"], [null, ".AppImage"], [null, ".appimage"], [null, ".tar.gz"], [null, ".gz"], [null, ".tar"], [null, ".zip"], [null, ".exe"]],
   "default_dir" : "Downloads",
-  "end_dirs": ["college_timetables", "pace_timetables", "pacmans", "AppImages", "AppImages", "archives", "archives", "tarballs", "zips"]
+  "end_dirs": ["college_timetables", "pace_timetables", "pacmans", "AppImages", "AppImages", "archives", "archives", "tarballs", "zips", "setups"]
 }
