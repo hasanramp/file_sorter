@@ -29,7 +29,7 @@ class SortFiles:
             print('Invalid type for to_sort_dir')
             exit()
         # self.to_sort_dir = to_sort_dir
-
+        self.to_sort_dir = os.path.join(os.path.dirname(os.getcwd()), to_sort_dir)
         self.end_dirs = end_dirs
         arr = []
         for x in self.end_dirs:

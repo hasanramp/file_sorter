@@ -41,7 +41,7 @@ def file_sorter():
 
 @file_sorter.command()
 @click.option('--def_dir', '--default_dir', '--d', type=str, default=None)
-@click.option('--sort_in_def_dir', '--dsr', type=bool, default=True)
+@click.option('--sort_in_def_dir', '--dsr', type=bool, default=False)
 @click.option('--to_sort_dir', '--tsd', type=str, default=None)
 def sort(def_dir, sort_in_def_dir, to_sort_dir):
     base_dir = ''
